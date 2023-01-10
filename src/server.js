@@ -8,7 +8,7 @@ import { notFoundHandler } from "./errorHandlers.js";
 const server = express();
 // server waits for request
 
-const port = 3001;
+const port = process.env.PORT;
 
 // ************************* MIDDLEWARES ****************************
 //order matters
@@ -23,7 +23,6 @@ const loggerMiddleWare = (req, res, next) => {
   req.user = "Riccardo";
   console.log("req.user:", req.user);
   console.log("xxxxxxxxxx", req);
-
   next(); //gives the control to whom is coming next (either another middleware or route handler)
 };
 
@@ -37,9 +36,27 @@ const loggerMiddleWare = (req, res, next) => {
 // };
 
 server.use(loggerMiddleWare);
-// server.use(policeOfficerMiddleware);
-// Just to let FE communicate with BE successfully
-server.use(cors());
+
+const whitelist = [process.env.FE_DEV_URL, process.env.FE_PROD_URL];
+
+server.use(
+  cors({
+    origin: (origin, corsNext) => {
+      console.log("ORIGIN: ", origin);
+
+      if (!origin || whitelist.indexOf(origin) !== -1) {
+        corsNext(null, true);
+      } else {
+        corsNext(
+          createHttpError(
+            400,
+            `Cors Error! Your origin ${origin} is not in the list!`
+          )
+        );
+      }
+    },
+  })
+);
 // If you do not add this line here BEFORE the endpoints, all req.body will be UNDEFINED
 server.use(express.json());
 
