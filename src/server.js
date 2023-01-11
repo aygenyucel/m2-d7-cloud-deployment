@@ -4,6 +4,7 @@ import authorsRouter from "./api/authors/index.js";
 import blogPostsRouter from "./api/blogPosts/index.js";
 import cors from "cors";
 import { notFoundHandler } from "./errorHandlers.js";
+import filesRouter from "./api/files/index.js";
 
 const server = express();
 // server waits for request
@@ -14,15 +15,15 @@ const port = process.env.PORT;
 //order matters
 //global middlewares needs to be displaying before endpoints
 const loggerMiddleWare = (req, res, next) => {
-  console.log("req.header:", req.headers);
+  // console.log("req.header:", req.headers);
   console.log(
     `Request method ${req.method} -- url ${req.url} -- ${new Date()}`
   );
-  console.log("req.user:", req.user);
+  // console.log("req.user:", req.user);
 
-  req.user = "Riccardo";
-  console.log("req.user:", req.user);
-  console.log("xxxxxxxxxx", req);
+  // req.user = "Riccardo";
+  // console.log("req.user:", req.user);
+  // console.log("xxxxxxxxxx", req);
   next(); //gives the control to whom is coming next (either another middleware or route handler)
 };
 
@@ -63,6 +64,7 @@ server.use(express.json());
 // ************************** ENDPOINTS *****************************
 server.use("/authors", authorsRouter);
 server.use("/blogPosts", blogPostsRouter);
+server.use("/files", filesRouter);
 
 // ************************** ERROR HANDLERS ************************
 server.use(notFoundHandler); //404
