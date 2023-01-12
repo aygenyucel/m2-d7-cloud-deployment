@@ -14,14 +14,10 @@ import { fileURLToPath } from "url";
 import fs from "fs";
 import uniqid from "uniqid";
 import httpErrors from "http-errors";
+import { blogPostsJSONPath } from "../lib/fs-tools.js";
 
 const { NotFound, Unauthorized, BadRequest } = httpErrors;
 const blogPostsRouter = express.Router();
-
-const blogPostsJSONPath = join(
-  dirname(fileURLToPath(import.meta.url)),
-  "blogPosts.json"
-);
 
 const getBlogPosts = () => JSON.parse(fs.readFileSync(blogPostsJSONPath));
 

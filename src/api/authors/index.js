@@ -12,6 +12,7 @@ import { fileURLToPath } from "url"; // CORE MODULE
 import { dirname, join } from "path"; //CORE MODULE
 
 import uniqid from "uniqid"; // 3RD PARTY MODULE (npm i uniqid)
+import { authorsJSONPath } from "../lib/fs-tools.js";
 
 const authorsRouter = express.Router();
 
@@ -24,10 +25,6 @@ console.log("parent folder path: ", dirname(fileURLToPath(import.meta.url)));
 console.log(
   "target: ",
   join(dirname(fileURLToPath(import.meta.url)), "authors.json")
-);
-const authorsJSONPath = join(
-  dirname(fileURLToPath(import.meta.url)),
-  "authors.json"
 );
 
 /****************************** */
